@@ -33,23 +33,30 @@ if selected_tickers:
     df_company_info = pd.DataFrame(company_info)
     
     # Display the dataframe
-    st.write('Company Info DataFrame:')
-    st.write(df_company_info)
+    
+    # Select the columns to display in the company info table
+    columns_to_display = ['symbol', 'shortName', 'sector', 'industry']
+
+    # Filter the dataframe to include only the selected columns
+    df_company_info_filtered = df_company_info[columns_to_display]
+
+    # Display the filtered dataframe
+    st.write('Company Info:')
+    st.write(df_company_info_filtered)
+    
+    if len(selected_tickers) >= 2:
+        # Calculate the correlation matrix
+        correlation_matrix = data.corr(method='pearson')
+        st.write('Correlation Matrix:')
+        st.write(correlation_matrix)
+
+        # Create a heatmap of the correlation matrix
+        st.write('Correlation Heatmap:')
+        fig = px.imshow(correlation_matrix, color_continuous_scale='RdBu')
+        st.plotly_chart(fig)
+    else:
+        st.write("Please select at least two tickers to calculate correlation.")
     # Calculate the correlation matrix
-    correlation_matrix = data.corr()
-    
-    st.write('Correlation Matrix:')
-    st.write(correlation_matrix)
-    
-    # Create a heatmap of the correlation matrix
-    st.write('Correlation Heatmap:')
-    fig = px.imshow(correlation_matrix, color_continuous_scale='RdBu')
-    st.plotly_chart(fig)
-    
-    # Fetch company info
-
-    
-
+ 
 else:
     st.write("Please select at least one ticker.")
-
